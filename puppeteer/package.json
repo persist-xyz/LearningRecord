@@ -1,0 +1,29 @@
+{
+  "name": "image-spd-xyz",
+  "version": "1.0.0",
+  "description": "image-spd-xyz",
+  "main": "index.js",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "color-convert": "^2.0.0",
+    "commander": "^2.19.0",
+    "inquirer": "^6.2.2",
+    "puppeteer": "^1.13.0",
+    "supports-color": "^6.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "puppeteer": "node index",
+    "test01": "node test01",
+    "test02": "node test02",
+    "test03": "node test03",
+    "test04": "node test04",
+    "commander": "node src/test-commander",
+    "chalk": "node src/test-chalk",
+    "inquirer": "node src/test-inquirer",
+    "app": "node src/app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xyz_persist",
+  "license": "ISC"
+}
