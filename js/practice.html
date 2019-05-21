@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+    <style>
+        .rectangle{
+            width: 200px;
+            height: 100px;
+            background: #eee;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .rectangle:after{
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            top: 40px;
+            background: #fff;
+            border-radius: 20px;
+        }
+        /* 箭头向上 */
+        .triangle_top{
+            width: 0;
+            height: 0;
+            border-top: 0 solid transparent;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 20px solid #f99;
+        }
+        .triangle_bottom{
+            width: 0;
+            height: 0;
+            border-top: 20px solid #f99;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 0 solid transparent;
+        }
+        .triangle_left{
+            width: 0;
+            height: 0;
+            border-top: 20px solid transparent;
+            border-left: 0 solid transparent;
+            border-right: 20px solid #f99;
+            border-bottom: 20px solid transparent;
+        }
+        .triangle_right{
+            width: 0;
+            height: 0;
+            border-top: 20px solid transparent;
+            border-left: 20px solid #f99;
+            border-right: 0 solid transparent;
+            border-bottom: 20px solid transparent;
+        }
+    </style>
+</head>
+<body>
+    <ul id="ul">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+    </ul>
+    <!-- 圆圈 -->
+    <div class="rectangle"></div>
+
+    <!-- 三角形 -->
+    <div class="triangle_bottom"></div>
+    <div class="triangle_top"></div>
+    <div class="triangle_left"></div>
+    <div class="triangle_right"></div>
+
+    <p id="help">Helpful notes will appear here</p>
+    <p>E-mail: <input type="text" id="email" name="email"></p>
+    <p>Name: <input type="text" id="name" name="name"></p>
+    <p>Age: <input type="text" id="age" name="age"></p>
+
+    <script type="text/javascript">
+
+        function showHelp(help) {
+        document.getElementById('help').innerHTML = help;
+        }
+
+        function makeHelpCallback(help) {
+            return function() {
+                showHelp(help);
+            };
+        }
+
+        function setupHelp() {
+            var helpText = [
+                {'id': 'email', 'help': 'Your e-mail address'},
+                {'id': 'name', 'help': 'Your full name'},
+                {'id': 'age', 'help': 'Your age (you must be over 16)'}
+                ];
+
+            for (var i = 0; i < helpText.length; i++) {
+                (function(i) {
+                    // var item = helpText[i];
+                    document.getElementById(helpText[i].id).onfocus = function() {
+                        showHelp(helpText[i].help);
+                    }
+                })(i); // 马上把当前循环项的item与事件回调相关联起来
+            }
+            
+            // for (var i = 0; i < helpText.length; i++) {
+            //     var item = helpText[i];
+            //     document.getElementById(item.id).onfocus = makeHelpCallback(item.help);
+            // }
+        }
+
+        setupHelp(); 
+
+        // 打印出点击li的下标
+        var ul = document.querySelector('ul')
+        var lis = document.querySelectorAll('ul li')
+        ul.addEventListener('click', function(e){
+            if (e.target.nodeName.toLowerCase() === 'li') {
+                console.log([].indexOf.call(lis, e.target))
+            }
+        }, false)
+    </script>
+</body>
+</html>

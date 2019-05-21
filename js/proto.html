@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>proto prototype constructor</title>
+</head>
+<body>
+    <div id="div1">div111</div>
+    <script type="text/javascript">
+        function Elem(id){
+            this.elem = document.getElementById(id)
+        }
+        Elem.prototype.html = function(val){
+            var elem = this.elem
+            if(val){
+                elem.innerHTML = val
+                return this //链式操作
+            }else{
+                return elem.innerHTML
+            }
+        }
+        Elem.prototype.on = function(type, fn){
+            var elem = this.elem
+            elem.addEventListener(type, fn) //addEventListener() 方法用于向指定元素添加事件句柄
+            return this
+        }
+        var div1 = new Elem('div1')
+        // console.log(div1.html())
+
+        div1.html('<p>hello killua</p>').on('click',function(){
+            alert('clicked')
+        }).html('<p>javascript</p>')
+    </script>
+</body>
+</html>
