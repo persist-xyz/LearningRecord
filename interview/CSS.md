@@ -292,10 +292,9 @@ Sass是对CSS（层叠样式表）的语法的一种扩充，诞生于2007年，
 ##### 25、什么是bfc，如何创建bfc？解决什么问题？
 - 块级格式化上下文
 - 创建BFC方法：
-  - float 浮动
-  - 绝对定位
-  - overflow 不为 visiable
-  - display 为表格布局或者弹性布局
+  - 浮动元素和绝对定位元素
+  - overflow 不为 visiable的块级盒子
+  - 非块级盒子的块级容器：即display 为 inline-blocks, table-cells, 和 table-captions （表格布局或者弹性布局）
 
 - 解决问题：
   - 可以解决浮动元素造成的父元素高度塌陷问题
