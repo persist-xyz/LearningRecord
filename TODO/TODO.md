@@ -1,13 +1,3 @@
-### 待补充
-
-- [HTML面试题](./interview/HTML.md)
-- [CSS面试题](./interview/CSS.md)
-- [JS面试题](./interview/JS.md)
-- [ES6面试题](./interview/ES6.md)
-- [vue面试题](./interview/vue.md)
-- [webpack面试题](./interview/webpack.md)
-
-----------
 
 ### 资料
 
@@ -28,6 +18,6 @@
 - [16种方法实现水平居中垂直居中](http://louiszhai.github.io/2016/03/12/css-center/)
 - [leetcode](https://leetcode-cn.com/problems/two-sum/)
 - [fis3](http://fis.baidu.com/fis3/docs/beginning/release.html)
-- 
+- …… 
 
 
