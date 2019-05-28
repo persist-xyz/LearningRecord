@@ -9,7 +9,6 @@
 npm i —g image-spa-xyz
 
 
-
 ## Usage
 
 npm run  image-spa-xyz

@@ -1,3 +1,5 @@
+
+
 创建数据库 use mall
 
 查看所有数据库  show dbs

@@ -1,0 +1,73 @@
+<!-- html:5 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+	<div id="components-demo">
+	  <button-counter></button-counter>
+
+<!--  <blog-post
+		  v-for="post in posts"
+		  v-bind:key="post.id"
+		  v-bind:title="post.title"></blog-post> -->
+	  <blog-post
+			:style="{'font-size': postFontSize + 'em'}"
+			@enlarge="enlarge"
+		  	v-for="post in posts"
+		  	v-bind:key="post.id"
+		  	v-bind:post="post"></blog-post>
+	</div>
+</body>
+<script>
+	Vue.component('button-counter', {
+	  data: function () {
+	    return {
+	      count: 0
+	    }
+	  },
+	  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+	})
+	
+	// 全局注册子组件
+	Vue.component('blog-post', {
+		props: ['post'],
+		template: `
+		  <div class="blog-post">
+		      <h3>{{ post.title }}</h3>
+		      <div v-html="post.content"></div>
+		      <button @click="large">large</button>
+		    </div>
+		`,
+		methods: {
+			large () {
+				this.postFontSize += 0.1
+				this.$emit('enlarge')
+			}
+		}
+	})
+
+	// 父组件
+	new Vue({
+		el: '#components-demo',
+		data: {
+			posts: [
+		      	{ id: 1, title: 'My journey with Vue' , content: 'contentcontent'},
+		      	{ id: 2, title: 'Blogging with Vue' },
+		      	{ id: 3, title: 'Why Vue is so fun' }
+		    ],
+		    postFontSize: 1
+		}
+	})
+</script>
+</html>
+
+
+
+
+
