@@ -1,5 +1,4 @@
 
-### 资料
 
 - [《图解 http 》读书笔记​](https://github.com/wangfupeng1988/read-notes/blob/master/book/%E5%9B%BE%E8%A7%A3http.md)
 - [30 seconds of code](https://30secondsofcode.org/)
@@ -16,8 +15,27 @@
 - [通俗的英文指南——Javascript的原型](https://www.w3cplus.com/js/a-plain-english-guide-to-javascript-prototypes.html)
 - [从零做一个前端开源项目](https://www.imooc.com/article/28240)
 - [16种方法实现水平居中垂直居中](http://louiszhai.github.io/2016/03/12/css-center/)
-- [leetcode](https://leetcode-cn.com/problems/two-sum/)
 - [fis3](http://fis.baidu.com/fis3/docs/beginning/release.html)
-- …… 
+
+
+
+todo
+
+
+
+防抖、节流
+
+scrollTop
+
+CSS3 border
+
+
+
+component / components
+
+
+
+
+
 
 
