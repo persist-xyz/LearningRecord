@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>水平垂直居中</title>
+	<style>
+		/*第一种*/
+		/*.container{
+			position: relative;
+			width: 500px;
+			height: 500px;
+		}
+		.center{
+			width: 200px;
+			height: 200px;
+			background: #f00;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			margin: auto;
+		}*/
+
+
+		/*第二种*/
+		/*.container{
+			position: relative;
+			width: 500px;
+			height: 500px;
+		}
+		.center{
+			width: 200px;
+			height: 200px;
+			background: #f00;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -100px;
+			margin-left: -100px;
+		}*/
+
+		/*第三种*/
+		/*.container{
+			position: relative;
+			width: 500px;
+			height: 500px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.center{
+			width: 200px;
+			height: 200px;
+			background: #f00;
+		} */
+
+
+		/*第四种*/
+		/*.container{
+			position: relative;
+			width: 500px;
+			height: 500px;
+		}
+		.center{
+			width: 200px;
+			height: 200px;
+			background: #f00;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}*/
+
+ 
+		/*第五种*/
+		.container{
+			width: 500px;
+			height: 500px;
+			background: #eee;
+			text-align: center;
+		}
+		.center{
+			display: inline-block;
+			vertical-align: middle;
+		}
+		.container::after{
+			display: inline-block;
+			vertical-align: middle;
+			content: '';
+			height: 100%;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="center">test</div>
+	</div>
+</body>
+
+
+
+

@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+body,html{
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    color: #000000;
+}
+table{
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+thead{
+    background: #3d444c;
+    color: #ffffff;
+}
+td,th{
+    border: 1px solid #e1e1e1;
+    padding: 0;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+	</style>
+</head>
+<body>
+<table id="jsTrolley">
+    <thead><tr><th>名称</th><th>价格</th><th>操作</th></tr></thead>
+    <tbody>
+        <tr><td>产品1</td><td>10.00</td><td><a href="javascript:void(0);">删除</a></td></tr>
+        <tr><td>产品2</td><td>30.20</td><td><a href="javascript:void(0);">删除</a></td></tr>
+        <tr><td>产品3</td><td>20.50</td><td><a href="javascript:void(0);">删除</a></td></tr>
+    </tbody>
+    <tfoot><tr><th>总计</th><td colspan="2">60.70(3件商品)</td></tr></tfoot>
+</table>
+ 
+<script type="text/javascript">
+ 
+function add(items) {
+ 
+    sum = 60.70;
+    for(var i =0 ;i<items.length ;i++){
+        var add = document.createElement("tr");
+        var src = document.getElementsByTagName("tbody");
+        add.innerHTML = "<td>"+items[i].name+"</td><td>"+items[i].price+"</td><td><a href='javascript:void(0);'>删除</a></td>";
+        src[0].appendChild(add);
+        sum +=items[i].price;
+    }
+    //var num = 3 +items.length;
+    var tableObj = document.getElementById("jsTrolley");
+    var num = tableObj.rows.length -2;
+    tableObj.rows[4+items.length].cells[1].innerText  =sum.toFixed(2)+"("+num+"件商品)";
+ 
+}
+ 
+function bind() {
+ 	
+ 	var arr = document.getElementsByTagName("a");
+ 	var src = document.getElementsByTagName("tbody");
+ 	s = src[0];
+ 	var len = arr.length;
+ 	for(var i =0 ;i<len ;i++)
+ 	{
+		arr[i].setAttribute("onclick","foo(s,this)");
+ 	}
+ 
+ 
+}
+ 
+function foo(x,y){
+	var tar = y.parentNode.parentNode;
+	x.removeChild(tar);
+	var v = y.parentNode.previousSibling.innerHTML;
+	sum -=v;
+	//console.log(sum);
+	var tableObj = document.getElementById("jsTrolley");
+	var num = tableObj.rows.length -2;
+	//console.log(sum2.toFixed(2)+"---"+num2);
+	tableObj.rows[tableObj.rows.length-1].cells[1].innerText = sum.toFixed(2)+"("+num+"件商品)";
+	
+}	
+ 
+var items = [{name:'ilv',price:10.0},{name:'ilv2',price:10.0}];
+ 
+add(items);
+bind();
+ 
+ 
+function show(){
+	var	tableRowInfo ="";
+	tableObj = document.getElementById("jsTrolley");
+	for(var i =0 ;i<tableObj.rows.length ; i++){
+		
+		for(var j=0 ;j<tableObj.rows[i].cells.length ; j++){
+			tableRowInfo  +=  tableObj.rows[i].cells[j].innerText + " ";
+		}
+		console.log(tableRowInfo); // 打印每行信息
+		tableRowInfo ="";	
+	}
+}
+show();
+ 
+</script>
+
+
+
+<script type="text/javascript">
+    function fun(x) {
+        let sum = x;
+        let tmp = function (y) {
+            sum *= y;
+            console.log(sum)
+            console.log('-----')
+            console.log(tmp)
+            return tmp;
+        }
+        tmp.toString = function () {
+            console.log('===')
+            console.log(sum)
+            return sum;
+        }
+        return tmp;
+    }
+
+    fun(2)(3)(4)
+
+
+// -----------
+
+    var init = 0
+    var fuck=function(m){
+        init = init * m; //如果传值过来，则相乘。当然init如果是0 则一直是0，看下面
+        return fuck
+    }
+
+    fuck.toString=function() {
+        return init;
+    }
+
+    function xxoo(m) {
+    // 初始化，否则init是0，那么永远乘 都是 0，也是很关键的一步
+        init = m ;
+        return fuck; //最终返回的是 元对象（不是实例化过后的对象哦)
+    }
+
+    // xxoo(2)(3)(4)
+
+console.log('-=-=---=-=-==')
+
+var arr=[1,2,3,4,2,1], b = new Set()
+arr.forEach(v => {
+    b.add(v)
+})
+console.log(b)
+
+function sort(arr) {
+    // body...
+    var c={},d=[]
+
+    for(var i=0; i<arr.length;i++){
+        if(!c[arr[i]]){
+            d.push(arr[i])
+        }
+    }
+    console.log(d)
+}
+sort(arr)
+
+</script>
+ 
+ 
+</body>
+</html>
+
+
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>get and set</title>
+</head>
+
+<body>
+</body>
+
+<script>
+	let myObj = {}
+	let age
+	Object.defineProperty(myObj, 'age', {
+		get: () => {
+			console.log('get age')
+			return age
+		},
+		set: (newAge) => {
+			console.log('set age')
+			age = newAge
+		}
+	})
+	myObj.age = 25
+	console.log(myObj.age)
+
+</script>
+</html>
+
+
+
+
+

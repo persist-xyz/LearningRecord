@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function getFileName(o){
+            var pos=o.lastIndexOf("\\");
+            return o.substring(pos+1);
+        }
+        function getSuffiex(fileName){
+            var lastDot = fileName.lastIndexOf(".");
+            return fileName.substring(lastDot);
+        }
+        var policy ;
+        function getPolicy() {
+            var file = $("#file").val();
+            if(file.length == 0) {
+                alert("请选择文件");
+                return ;
+            }
+            // url: "https://api.mgzf.com/tianyi/gateway/index",
+            var fileName = getFileName(file);
+            $.ajax({
+                // url: "http://192.168.50.255/tianyi/gateway/index",
+                url: "https://api.mgzf.com/tianyi/gateway/index",
+                type: 'POST',
+                data: {"method": "front.aliyun.oss.policy", "fileNameOrSuffix": fileName},
+                dataType:"text",
+                success: function (returndata) {
+                    $("#resp").text(returndata);
+                    var json = eval('(' + returndata + ')');
+                    policy = json.content;
+                },
+                error: function (returndata) {
+                    alert(returndata);
+                }
+            });
+        }
+        function upload() {
+
+                var formData = new FormData();
+                //注意formData里append添加的键的大小写
+                formData.append('key', policy.key );  //存储在oss的文件路径
+                formData.append('policy', policy.policy);  //policy
+                formData.append('ossAccessKeyId', policy.ossAccessKeyId);  //accessKeyId
+                formData.append('success_action_status', "200");  //成功后返回的操作码
+                formData.append('signature', policy.signature);   //签名
+                formData.append("file",$("#file")[0].files[0]);
+                $.ajax({
+                    url:  policy.postHost,
+                    type: 'POST',
+                    data: formData
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (returndata) {
+                        var downloadAlink = "<a href='"+policy.downloadUrl+"' target='_blank'>"+policy.downloadUrl+"</a>";
+                        if(policy.downloadUrl.endWith(".jpeg") || policy.downloadUrl.endWith(".jpg") || policy.downloadUrl.endWith(".gif")
+                            || policy.downloadUrl.endWith(".png")){
+                            downloadAlink+="<img width='300' src='"+policy.downloadUrl+"' target='_blank'/>";
+                        }
+                      $("#uploadResult").html(downloadAlink);
+                    },
+                    error: function (returndata) {
+                        alert("上传失败："+returndata);
+                    }
+                });
+        }
+        function getSuffix(fileName) {
+            var pos = fileName.lastIndexOf(".");
+            var suffix = '';
+            if(pos != -1) {
+                suffix = fileName.substring(pos);
+            }
+            return suffix;
+        }
+
+        String.prototype.endWith=function(str){
+            if(str==null||str==""||this.length==0||str.length>this.length)
+                return false;
+            if(this.substring(this.length-str.length)==str)
+                return true;
+            else
+                return false;
+            return true;
+        }
+    </script>
+    <title>demo</title>
+</head>
+<body>
+<form id="uploadForm">
+
+    <input type="file" id="file" name="file"  /><br />
+    <button type="button" onclick="getPolicy()">调用后台取上传信息</button><a href="http://192.168.60.173:8080/workspace/myWorkspace.do?projectId=89#4593" target="_blank">文档</a><pre id="policyJson"></pre></form><p> 报文1：<br/><textarea id="resp" style="margin: 0px; width: 608px;min-height: 150px; height: auto"></textarea>
+</p>
+<p> <button type="button" onclick="upload()">上传</button>
+    <div id="uploadResult" >
+
+</div>
+</p>
+
+</body>
+</html>

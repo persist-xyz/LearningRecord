@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>test</title>
+	<style>
+		
+	</style>
+</head>
+
+<body>
+	<div class="parent">
+		<span class="child">
+			
+		</span>
+	</div>
+	<script type="text/javascript">
+		function simpleCopy (obj) {
+			if (typeof obj != 'object') {
+				return false
+			}
+			let copyObj = {}
+			for(var i in obj) {
+				copyObj[i] = obj[i]
+			}
+			return copyObj
+		}
+		var obj = {
+			a: 1,
+			b: [1, 2, 3]
+		}
+		simpleCopy(obj)
+
+
+		function simpleCopy2 (obj) {
+			let copyObj = {}
+			Object.entries(obj).forEach(item => {
+				// var desc = Object.getOwnPropertyDescriptor(obj, item)
+				// Object.defineProperty(copyObj, item, obj[item])
+				copyObj[item[0]] = item[1]
+			})
+			return copyObj
+		}
+		simpleCopy2(obj)
+
+
+		function deepCopy (obj, copyObj) {
+			var copyObj = copyObj || {}
+			for(var i in obj) {
+				if (typeof obj[i] === 'object') {
+					copyObj[i] = Array.isArray(obj[i])  ? [] : {}
+					deepCopy(obj[i], copyObj[i])
+				} else {
+					copyObj[i] = obj[i]
+				}
+			}
+			return copyObj
+		}
+		deepCopy(obj)
+
+		function test(a){
+			this.a = a
+			console.log(this.a)
+			return (function (b) {
+				return this.a + b
+			})(b)
+		}(function (a, b) {
+			return a
+		}(1, 2))
+		test(4)
+	</script>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

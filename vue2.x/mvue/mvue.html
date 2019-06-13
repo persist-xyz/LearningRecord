@@ -3,96 +3,29 @@
 <head>
 	<meta charset="UTF-8">
 	<title>mvue</title>
-	<script src="https://unpkg.com/vue/dist/vue.js"></script>
-	<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 </head>
+
 <body>
 	<div id="app">
-			<com-a></com-a>
-			<com-b></com-b>
-			<com-c></com-c>
+		<input type="text" v-model="name">
+		<h3>{{name}}</h3>
 	</div>
+
+	<script src="./js/observer.js"></script>
+	<script src="./js/watcher.js"></script>
+	<script src="./js/compile.js"></script>
+	<script src="./js/index.js"></script>
+	<script>
+		const vm = new Mvue({
+			el: '#app',
+			data: {
+				name: 'xyz'
+			}
+		})
+	</script>
+
 </body>
 
-<template id="divA">
-	<div>
-		<span>A 组件： {{name}}</span>
-		<button @click="send">AsendToC</button>
-	</div>
-</template>
-
-<template id="divB">
-	<div>
-		<span>B 组件： {{age}}</span>
-		<button @click="send">BsendToC</button>
-	</div>
-</template>
-
-<template id="divC">
-	<div>
-		<span>C 组件： {{name}} {{age}}</span>
-	</div>
-</template>
-
-<script>
-	let Event = new Vue()
-	const componentsA = {
-		template: '#divA',
-		data() {
-			return {
-				name: 'name AA'
-			}
-		},
-		methods: {
-			send () {
-				Event.$emit('update-a', this.name)
-			}
-		}
-	}
-
-	const componentsB = {
-		template: '#divB',
-		data() {
-			return {
-				age: 'age BB'
-			}
-		},
-		methods: {
-			send () {
-				Event.$emit('update-b', this.age)
-			}
-		}
-	}
-
-	const componentsC = {
-		template: '#divC',
-		data() {
-			return {
-				name: '',
-				age: ''
-			}
-		},
-		mounted () {
-			Event.$on('update-a', name => {
-				this.name = name
-			})
-			Event.$on('update-b', age => {
-				this.age = age
-			})
-		}
-	}
-	new Vue({
-		el: '#app',
-		components: {
-			'com-a': componentsA,
-			'com-b': componentsB,
-			'com-c': componentsC
-		},
-		mounted () {
-			console.log('app mounted')
-		}
-	})
-</script>
 </html>
 
 
