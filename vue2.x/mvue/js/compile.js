@@ -22,6 +22,7 @@ Compile.prototype = {
         const fragment = document.createDocumentFragment()  // 新建一个空的documentFragment
         let child = el.firstChild
         // 将子节点全部移动到文档片段中
+        // TODO why 
         while (child) {
             fragment.appendChild(child)
             child = el.firstChild

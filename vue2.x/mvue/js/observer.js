@@ -2,7 +2,7 @@
  * 监听器
  * 作用：
  * 监听每个属性，变化时通知 watcher订阅者去更新视图
- * 这个过程会有很多订阅者watcher，所有需要一个容器Dep去存放
+ * 这个过程会有很多订阅者watcher，所以需要一个容器Dep去存放
  */
 
 function observer (data) {
@@ -21,7 +21,7 @@ function defineReactive (data, key, value) {
     let dep = new Dep()
     Object.defineProperty(data, key, {
         get: function () {
-            // 为了不重复添加
+            // 添加订阅者
             if (Dep.target) {
                 dep.addSub(Dep.target)
             }
@@ -42,7 +42,7 @@ function Dep () {
 Dep.prototype = {
     addSub: function (sub) {
         this.subs.push(sub)
-    } ,
+    },
     notify: function () {
         console.log('监听到了属性变化，需要通知watcher更新视图啦')
         this.subs.map(sub => {
