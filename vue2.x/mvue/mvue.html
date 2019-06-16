@@ -7,8 +7,10 @@
 
 <body>
 	<div id="app">
-		<input type="text" v-model="name">
-		<h3>{{name}}</h3>
+		<input type="text" v-model="myObj.name">
+		<input type="text" v-model="age">
+		<h3>{{myObj.name}} </h3>
+		<h3>{{age}}</h3>
 	</div>
 
 	<script src="./js/observer.js"></script>
@@ -19,7 +21,10 @@
 		const vm = new Mvue({
 			el: '#app',
 			data: {
-				name: 'xyz'
+				myObj: {
+					name: 'xyz'
+				},
+				age: 18
 			}
 		})
 	</script>
