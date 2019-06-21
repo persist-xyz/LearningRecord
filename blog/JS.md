@@ -4,14 +4,21 @@
 - 引用类型：Object,Array,Date,RegExp,Function
 
 
+
+
 - null用来表示尚未存在的对象；当声明的变量还未被初始化时，变量的默认值为undefined
-- 注意的是typeof null返回为object,因为特殊值null被认为是一个空的对象引用
--  null是一个表示"无"的对象，转为数值时为0；undefined是一个表示"无"的原始值，转为数值时为NaN
--  undefined == null    // true
+
+- 注意的是typeof null返回为object，因为特殊值null被认为是一个空的对象引用
+
+- null是一个表示"无"的对象，转为数值时为0；undefined是一个表示"无"的原始值，转为数值时为NaN
+
+- undefined == null    // true
+
+  
 
 > 从内存来看 null 和 undefined 本质的区别是什么？
 
-给一个全局变量赋值为null，相当于将这个变量的指针对象以及值清空，如果是给对象的属性 赋值为null，或者局部变量赋值为null,相当于给这个属性分配了一块空的内存，然后值为null， JS会回收全局变量为null的对象。
+给一个全局变量赋值为null，相当于将这个变量的指针对象以及值清空，如果是给对象的属性 赋值为null，或者局部变量赋值为null，相当于给这个属性分配了一块空的内存，然后值为null， JS会回收全局变量为null的对象。
 
 给一个全局变量赋值为undefined，相当于将这个对象的值清空，但是这个对象依旧存在,如果是给对象的属性赋值 为undefined，说明这个值为空值
 

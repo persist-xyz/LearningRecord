@@ -43,7 +43,7 @@ position: absolute;top: -9999px;left: -9999px
 clear：both；// 解决2。3
 
 给父元素添加clearfix样式    //解决1
-``` 
+``` css
 .clearfix:after{
     content: ".";       
     display: block;  

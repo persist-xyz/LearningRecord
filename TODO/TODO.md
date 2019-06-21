@@ -19,7 +19,31 @@
 
 
 
+HTTP面试
+
+<https://juejin.im/post/5d032b77e51d45777a126183>
+
+
+
+mongodb
+
+<https://www.cnblogs.com/xiaohuochai/p/7215067.html?utm_source=itdadao&utm_medium=referral#anchor5>
+
+
+
 todo
+
+
+
+深浅拷贝
+
+<https://juejin.im/post/5abb55ee6fb9a028e33b7e0a>
+
+
+
+算法
+
+<https://mp.weixin.qq.com/s/dXJLd1L_2KwTKWqrkbCpDg>
 
 
 
@@ -29,9 +53,41 @@ scrollTop
 
 CSS3 border
 
+component / components // vue-router
 
 
-component / components
+
+Object.defineProperty 与 Proxy  
+
+
+
+MVVM实现
+
+<https://juejin.im/post/5acd0c8a6fb9a028da7cdfaf>
+
+<https://juejin.im/post/5af8eb55f265da0b814ba766>
+
+
+
+Object.defineProperty第一个缺陷无法监听数组的变化
+
+vue支持的八种监听数组变化的方法其实也是作者自己hack解决的
+
+`const aryMethods = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'];`
+
+第二个缺陷,只能劫持对象的属性，必须深度遍历每个对象
+
+
+
+Proxy可以直接监听整个对象而非属性，所以不需遍历，并返回一个新对象
+
+Proxy可以直接监听数组的变化
+
+Proxy的劣势就是兼容性问题
+
+
+
+
 
 
 

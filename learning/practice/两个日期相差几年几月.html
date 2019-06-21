@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>两个日期相差几年几月</title>
+</head>
+<body></body>
+
+<script>
+    const startTime = '2016-04-20'
+    const endTime = '2020-01-18'
+
+    function reduceTime (startTime, endTime) {
+        let year = new Date(endTime).getFullYear() - new Date(startTime).getFullYear()
+        let month = new Date(endTime).getMonth() - new Date(startTime).getMonth()
+        let day = new Date(endTime).getDay() - new Date(startTime).getDay()
+
+        if (month < 0) {
+            year = year - 1
+            month = 12 - Math.abs(month)
+        }
+        console.log(year, month)
+    }
+    reduceTime(startTime, endTime)
+</script>
+
+

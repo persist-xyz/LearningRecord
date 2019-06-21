@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>array</title>
+</head>
+<body></body>
+
+<script>
+    const arr = [1,2,3,4,5]
+    const result = arr.reduce(Math.pow)
+    console.log(result)
+
+    arr.reduce((pre, next) => {
+        console.log(pre, next)
+        return pre + next
+    })
+
+    
+
+</script>
+
+
