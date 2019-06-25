@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DOM</title>
+    <style>
+        #move{
+            display: block;
+            width: 100px;
+            height: 100px;
+            background: red;
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* animation: mymove 5s infinite; */
+        }
+        @keyframes mymove {
+            from {
+                top: 0px;
+                left: 0px
+            }
+            to {
+                top: 300px;
+                left: 300px
+            }
+        }
+    </style>
+</head>
+<body>
+    <ul></ul>
+    <div id="move"></div>
+</body>
+<script>
+    // 插入300个节点
+    function step1 () {
+        for(var i=1; i<=300;i++) {
+            var li = document.createElement('li')
+            li.innerText = i
+            document.querySelector('ul').appendChild(li)
+        }
+        
+        document.querySelector('ul').addEventListener('click', function (e) {
+            if(e.target.tagName === 'LI') {
+                console.log(e.target.innerText)
+            }
+        })
+    }
+
+    // 插入30000个节点
+    function step2 () {
+        let _ul = document.querySelector('ul')
+        const total = 30000
+        let batchSise = 5
+        let batchCount = total / batchSise
+        let batchDown = 0
+
+        const createItems = function () {
+            var frameElement = document.createDocumentFragment()
+            for(var i = 0; i < total; i++) {
+                var li = document.createElement('li')
+                li.innerText = (i + 1) + (batchDown * batchSise)
+                frameElement.appendChild(li)
+            }
+            _ul.appendChild(frameElement)
+            batchDown++
+        }
+
+        if (batchDown < batchCount) {
+            window.requestAnimationFrame(createItems)
+        }
+
+        _ul.addEventListener('click', function (e) {
+            if(e.target.tagName === 'LI') {
+                console.log(e.target.innerText)
+            }
+        })
+    }
+    
+    // requestAnimationFrame实现动画
+    var left = 0
+    var top1 = 0, flag = true
+    var el = document.getElementById('move')
+
+    function myRender () {
+        left === 0 ? flag = true : left == 300 ? flag = false : '';
+        top1 === 0 ? flag = true : top1 == 300 ? flag = false : '';
+        
+        flag ? el.style.left = `${left++}px` : el.style.left = `${left--}px`
+        flag ? el.style.top = `${top1++}px` : el.style.top = `${top1--}px`
+    }
+
+    (function animloop() {
+        myRender()
+        window.requestAnimationFrame(animloop)
+    })()
+
+</script>
+
+
