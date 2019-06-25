@@ -11,7 +11,6 @@ function observer (data) {
         return
     }
     Object.keys(data).map(key => {
-        debugger
         defineReactive(data, key, data[key])
     })
 }
