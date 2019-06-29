@@ -79,23 +79,25 @@
     }
     
     // requestAnimationFrame实现动画
-    var left = 0
-    var top1 = 0, flag = true
-    var el = document.getElementById('move')
+    function step3 () {
+        var left = 0
+        var top1 = 0, flag = true
+        var el = document.getElementById('move')
 
-    function myRender () {
-        left === 0 ? flag = true : left == 300 ? flag = false : '';
-        top1 === 0 ? flag = true : top1 == 300 ? flag = false : '';
-        
-        flag ? el.style.left = `${left++}px` : el.style.left = `${left--}px`
-        flag ? el.style.top = `${top1++}px` : el.style.top = `${top1--}px`
+        function myRender () {
+            left === 0 ? flag = true : left == 300 ? flag = false : '';
+            top1 === 0 ? flag = true : top1 == 300 ? flag = false : '';
+
+            flag ? el.style.left = `${left++}px` : el.style.left = `${left--}px`
+            flag ? el.style.top = `${top1++}px` : el.style.top = `${top1--}px`
+        }
+
+        (function animloop() {
+            myRender()
+            window.requestAnimationFrame(animloop)
+        })()
     }
-
-    (function animloop() {
-        myRender()
-        window.requestAnimationFrame(animloop)
-    })()
-
+    
 </script>
 
 

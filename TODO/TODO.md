@@ -47,6 +47,26 @@ todo
 
 
 
+Event Loop 必知必会六道题
+
+https://zhuanlan.zhihu.com/p/34182184
+
+
+
+Promise 必知必会（十道题）
+
+https://zhuanlan.zhihu.com/p/30797777
+
+https://zhuanlan.zhihu.com/p/25198178
+
+
+
+
+
+
+
+
+
 防抖、节流
 
 scrollTop
