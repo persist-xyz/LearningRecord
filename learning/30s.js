@@ -113,20 +113,23 @@ let myCode = {
 
     /**
      * 统计某一字符或字符串在另一个字符串中出现的次数
+     * str: 字符串
+     * target: 目标字符
      */
-     countStr: (str, otherstr) => {
-         let obj = {}
-        for (let i of otherstr) {
+    // 1
+     countStr1: (str, target) => {
+         // one 只能统计单个字符 LOW
+        let obj = {}
+        for (let i of str) {
             if (!obj[i]) {
                 obj[i] = 1
             } else {
                 obj[i]++
             }
         }
-        // console.log(obj)
         let max = 0
         for (let j in obj) {
-            if (j === str) {
+            if (j === target) {
                 console.log(obj[j])
                 if (obj[j] > max) {
                     max = obj[j] 
@@ -134,7 +137,121 @@ let myCode = {
             }
         }
         console.log(max)
-     }
+     },
+
+     // 2
+     countStr2: (str, target) => {
+        let count = 0
+        const fn = (s) => {
+            console.log(s)
+            // if (s.match(target)) {
+            // or
+            if (s.includes(target)) {
+                s = s.substr(s.indexOf(target) + target.length)
+                count++
+                fn(s)
+            }
+        }
+        fn(str)
+        console.log(count)
+    },
+
+    // 3
+    countStr3: (str, target) => {
+        const count = str.split(target).length - 1
+        console.log(count)
+        return count
+    },
+
+    /**
+     * 写一个判断数据类型的方法
+     * typeOf 返回 string number boolean function 
+     * 
+     * Object.prototype.toString.call() 
+     * 返回 '[object Array]' '[object Object]' '[object Date]' '[object Regexp]' '[object Function]'
+     */
+    getType: (target) => {
+        let type = Object.prototype.toString.call(target).replace(/\[object\s|\]/g, '')
+        console.log(type)
+    },
+
+    // 常见的异步方法
+    asyncFn: () => {
+        // 1
+        $('body').onclick = e => {
+            console.log(e)
+        }
+
+        // 2
+        document.querySelector('body').addEventListener('click', e => {
+            console.log(e)
+        })
+
+        // 3
+        setTimeout((e) => {
+            console.log(e)
+        }, 100)
+
+        // 4
+        $ajax('/url', res => {})
+    },
+
+    /**
+     * 获取当前url查询字符串中的参数的方法
+     */
+    queryUrl: (url) => {
+        const param = {};
+        url.replace(/[?&](.*?)=([^&]*)/g, (m, $1, $2) => param[$1] = $2);
+        return param;
+    },
+
+    /**
+     * 返回到顶部的方法有哪些
+     */
+    toPageTop: () => {
+        // 1
+        window.location.href += '#'
+
+        // 2
+        document.documentElement.scrollTop = 0
+    },
+
+    /**
+     * 判断字符串是否为回文字符串
+     */
+    isPalindrome: (str) => {
+        // 忽略非字母数字字符，转成小写；反转字符串进行对比
+        let strLower = str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()
+        const isEq = strLower === strLower.split('').reverse().join('')
+        return isEq
+    },
+
+    /**
+     * (a == 1 && a == 2 && a == 3 )
+     * (a === 1 && a == 2 && a === 3 )
+     * 
+     */
+    equal: () => {
+        // 宽松相等
+        let a = {
+            value: 0
+        }
+        a.valueOf = () => {
+            return a.value += 1
+        }
+        console.log((a == 1 && a == 2 && a == 3)) 
+
+
+        // 严格相等
+        let value = 0
+        Object.defineProperty(global || window, 'b', {
+            get: function () {
+                return value += 1
+            }
+        })
+        console.log((b === 1 && b === 2 && b === 3)) 
+    }
 }
 
-myCode.countStr('wg', ' rrefer wwgegewwvfty ')
+myCode.equal()
+

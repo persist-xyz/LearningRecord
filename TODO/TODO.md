@@ -61,7 +61,9 @@ https://zhuanlan.zhihu.com/p/25198178
 
 
 
+跨域 CORS
 
+http://www.ruanyifeng.com/blog/2016/04/cors.html
 
 
 
