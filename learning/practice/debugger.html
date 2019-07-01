@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+</head>
+<body>
+    <script type="text/javascript">
+        /**
+         * 根据Promise/A+规范，实现自己的Promise
+         */
+
+        const PENDING = 'pending'
+        const FULFILLED = 'fulFilled'
+        const REJECTED = 'rejected'
+
+        class Promise {
+            constructor (excutor) {
+                const that = this
+                that.state = PENDING
+                that.value = undefined
+                that.reason = undefined
+                // 存储fulFilled状态对应的onFulfilled函数
+                that.onFulfilledCallbacks = []
+                // 存储rejected状态对应的onRejected函数
+                that.onRejectedCallbacks = []
+
+                let resolve = (value) => {
+                    // 解决resolve方法嵌套返回promise的问题
+                    if (value && value.then && typeof value.then === 'function') {
+                        return value.then(resolve, rejected)
+                    }
+                    setTimeout(() => {
+                        if (that.state === PENDING) {
+                            that.state = FULFILLED
+                            that.value = value
+                            // 分别执行成功状态订阅器中的回调方法
+                            that.onFulfilledCallbacks.forEach(cb => cb(that.value))
+                        }
+                    })
+                }
+
+                let rejected = (reason) => {
+                    setTimeout(() => {
+                        if (that.state === PENDING) {
+                            that.state = REJECTED
+                            that.reason = reason
+                            // 分别执行订失败状态阅器中的回调方法
+                            that.onRejectedCallbacks.forEach(cb => cb(that.reason))
+                        }
+                    })
+                }
+
+                try{
+                    excutor(resolve, rejected)
+                } catch (err) {
+                    rejected(err)
+                }
+            }
+
+            then (onFulfilled, onRejected) {
+
+                onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value
+                onRejected = typeof onRejected === 'function' ? onRejected : reason => reason
+
+                let promise2
+                if (this.state === FULFILLED) {
+                    return promise2 = new Promise((resolve, rejected) => {
+                        setTimeout(() => {
+                            try{
+                                let v = onFulfilled(this.value)
+                                this.resolvePromise(promise2, v, resolve, rejected)
+                            } catch (err) {
+                                rejected(err)
+                            }
+                        })
+                    })
+                } else if (this.state === REJECTED) {
+                    return promise2 = new Promise((resolve, rejected) => {
+                        setTimeout(() => {
+                            try{
+                                let v = onRejected(this.reason)
+                                this.resolvePromise(promise2, v, resolve, rejected)
+                            } catch (err) {
+                                rejected(err)
+                            }
+                        })
+                    })
+                } else if (this.state === PENDING) {
+                    // 这里是为了解决异步的问题，采用发布订阅的方式，下面两个数组分别存储成功和失败的回调
+                    // 返回一个Promise是为了解决可以链式调用的问题
+
+                    return promise2 = new Promise((resolve, rejected) => {
+                        this.onFulfilledCallbacks.push(() => {
+                            try {
+                                let v = onFulfilled(this.value)
+                                // 解析promise流程
+                                this.resolvePromise(promise2, v, resolve, rejected)
+                            } catch (err) {
+                                rejected(err)
+                            }
+                        })
+
+                        this.onRejectedCallbacks.push(() => {
+                            try {
+                                let v = onRejected(this.reason)
+                                // 解析promise流程
+                                this.resolvePromise(promise2, v, resolve, rejected)
+                            } catch (err) {
+                                rejected(err)
+                            }
+                        })
+
+                    })
+                }
+            }
+
+            resolvePromise (promise2, x, resolve, rejected) {
+                console.log(this)
+                if (promise2 === x) {
+                    return rejected(new Error('循环引用'))
+                }
+                // promise2是否已经resolve或者rejected
+                let called = false
+                if (x instanceof Promise) {
+                    if (x.state === PENDING) {
+                        x.then(y => {
+                            this.resolvePromise(promise2, y, resolve, rejected)
+                        })
+                    } else {
+                        x.then(resolve, rejected)
+                    }
+                } else if (x) {
+                    if (x !== null && (typeof x === 'object') || typeof x === 'function') {
+                        try {
+                            let then = x.than
+                            if (typeof then === 'function') {
+                                then.call(x, y => {
+                                    if (called) return
+                                    called = true
+                                    this.resolvePromise(promise2, y, resolve, rejected)
+                                }, err => {
+                                    if (called) return
+                                    called = true
+                                    rejected(err)
+                                })
+                            } else {
+                                // 到这里说明x不是一个thenable对象，可以直接当作值resolve promise2就可以
+                                resolve(x)
+                            }
+                        } catch (err) {
+                            rejected(err)
+                        }
+                    }
+                } else {
+                    // 如果X是一个普通的值，则用x的值去resolve promise2
+                    resolve(x)
+                }
+            }
+        }
+
+        let a = true
+        new Promise((resolve, rejected) => {
+            if (a) {
+                resolve('succ')
+            } else {
+                rejected('fail')
+            }
+        }).then(res => {
+            console.log(res)
+            return new Promise((resolve, rejected) => {
+                resolve(new Promise((resolve,reject)=>{
+                    resolve("111")
+                }))
+            })
+        }, err => {
+            console.log(err)
+        }).then(res => {
+            console.log('then2--' + res)
+        }, err => {
+            console.log('err2--' + err)
+        })
+
+    </script>
+</body>
+</html>
