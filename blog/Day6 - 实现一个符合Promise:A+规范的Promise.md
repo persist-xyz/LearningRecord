@@ -1,3 +1,26 @@
+### 前言 
+
+网上有太多的文章来一步步的介绍该如何实现符合规范的Promise源码了
+
+但是呢
+
+不管看多少篇、多少遍，真的不如自己对照规范一行一行手动敲一遍来的实在～   😂😂😂
+
+
+
+### 参考
+
+阮一峰老师的文章  [ Promise对象](http://es6.ruanyifeng.com/#docs/promise)
+
+[Promises/A+规范原文](https://promisesaplus.com/)
+
+[【翻译】Promises/A+规范](http://www.ituring.com.cn/article/66566)
+
+
+
+### 完整版
+
+```javascript
 /**
  * 根据Promise/A+规范，实现自己的Promise
  * 
@@ -244,22 +267,14 @@ function resolvePromise (promise2, x, resolve, reject) {
     }
 }
 
-/* let a = true
-new Promise((resolve, reject) => {
-    setTimeout(() => {
-        if (a) {
-            resolve('succ')
-        } else {
-            reject('fail')
-        }
-    }, 1000)
-}).then(res => {
-    console.log(res)
-}, err => {
-    console.log(err)
-}) */
+```
 
-// 执行测试用例需要用到的代码
+
+
+### 测试
+
+```javascript
+// 在promise实现的代码中，增加以下执行测试用例需要用到的代码
 Promise.deferred = function() {
     let defer = {};
     defer.promise = new Promise((resolve, reject) => {
@@ -274,8 +289,25 @@ try {
 } catch (e) {
     console.log(e, '---')
 }
+```
+
+---
+
+```javascript
+// 安装测试脚本
+npm i -g promises-aplus-tests
+
+// 测试命令
+promises-aplus-tests Promise.js
+
+// 872 passing
+```
 
 
+
+### Promise其他方法
+
+```javascript
 // 立刻返回一个promise，一般用于没有promise对象，需要将一个东西，转为promise
 Promise.resolve = function (data) {
     return new Promise(resolve => {
@@ -288,6 +320,7 @@ Promise.reject = function (reason) {
         reject(reason)
     })
 }
+
 
 // 接收一个promise数组，全部成功之后才往下执行，并返回一个promise
 Promise.all = function (promiseArray) {
@@ -306,6 +339,7 @@ Promise.all = function (promiseArray) {
         })
     })
 }
+
 
 // 接收一个promise数组，只要有一个先返回，无论是resolve还是reject，都会往下执行then中的成功或者失败回调，
 // 其他的promise也会继续执行，但是不会使用结果
@@ -327,6 +361,7 @@ Promise.prototype.catch = function (reject) {
     return this.then(null, reject)
 }
 
+
 // 无论前面执行结果状态，都会进入该方法中，且会将值原封不动的传给后面的then
 Promise.prototype.finally = function (callback) {
     return this.then(value => {
@@ -339,4 +374,20 @@ Promise.prototype.finally = function (callback) {
         })
     })
 }
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
