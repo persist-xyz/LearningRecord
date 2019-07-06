@@ -11,7 +11,7 @@
  */
 
 const PENDING = 'pending'
-const FULFILLED = 'fulFilled'
+const FULFILLED = 'fulfilled'
 const REJECTED = 'rejected'
 
 function Promise (excutor) {

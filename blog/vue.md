@@ -44,9 +44,46 @@ DOMListeners监听页面所有View层DOM元素的变化，当发生变化，Mode
 
 DataBindings监听Model层的数据，当数据发生变化，View层的DOM元素随之变化。
 
-#### 3、vue中<keep-alive>的作用？
 
-把切换出去的组件保留在缓存中，可以保留组件的状态或者避免重新渲染
+
+
+
+#### 3、vue中keepAlive的作用？遇到的问题？
+
+把切换出去的组件保留在缓存中，可以保留组件的状态避免重新渲染
+
+使用了keepAlive的页面，首次进入页面时，钩子触发是 created - mounted- activated，退出页面触发deactivated；再次进页面只触发activated。
+
+
+
+后一个页面滚动会触发前一个keepAlive页面的滚动事件，并且无法销毁
+
+解决：
+
+在导航路由beforeRouteLeave
+
+```javascript
+let routerLeave = false
+
+beforeRouteEnter (to, from, next) {
+  routerLeave = true;
+  next()
+},
+
+beforeRouteLeave (to, from, next) {
+  routerLeave = true;
+  if(to.name === 'detail') {
+  	routerLeave = false;
+  }
+  next();
+}
+// 加载下一页的地方，加上判断条件
+if (this.listReachBottom && routerLeave) {
+  // loadingNextPage
+}
+```
+
+
 
 #### 4、vuex
 
@@ -66,17 +103,31 @@ actions => 像一个装饰器，包裹mutations，使之可以异步
 
 modules => 模块化Vuex
 
+
+
+
+
 #### 5、v-for中key的作用？
 
-> key是给每一个vNode的唯一ID，可以依靠key，更准确、更快的找到oldVnode中对应的vNode节点
+key是给每一个VNode的唯一ID，可以依靠key，更准确、更快的找到oldVnode中对应的vNode节点
 
 带上key就不会就地复用，所有更准确；
 
 利用key的唯一性生成map对象来获取对应节点比遍历节点更快。
 
+
+
+
+
+
+
 #### 6、vue的虚拟dom？
 
 虚拟的DOM的核心思想是：对复杂的文档DOM结构，提供一种方便的工具，进行最小化地DOM操作
+
+
+
+
 
 #### 7、Virtual DOM算法，简单总结下包括几个步骤：
 
@@ -85,6 +136,10 @@ modules => 模块化Vuex
 2、当有数据状态变更时，重新构建一个新的JS的DOM树，通过新旧对比DOM数的变化diff，并记录两棵树差异
 
 3、把步骤2中对应的差异通过步骤1重新构建真正的DOM，并重新渲染到页面中，这样整个虚拟DOM的操作就完成了，视图也就更新了
+
+
+
+
 
 #### 8、Vue中Watcher与Virtual DOM的关系：
 
