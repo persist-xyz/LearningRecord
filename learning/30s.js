@@ -10,11 +10,27 @@ const call = (key, ...args) => context => context[key](...args);
 
 
 let myCode = {
-
     /**
-     * 数组长度为5且元素的随机数在2-32间不重复的值
+     * 编写一个程序将数组扁平化去并除其中重复部分数据，最终得到一个升序且不重复的数组
      */
+    flats: () => {
+        var arr = [ [1, 2, 2], [3, 4, 5, 5], [6, 7, 8, 9, [11, 12, [12, 13, [14] ] ] ], 10]
 
+        // 1
+        let arr2 = arr.toString().split(',').map(i => Number(i)).sort((pre, next) => pre - next)
+        
+        // 2
+        arr2 = arr.flat(4).sort((pre, next) => pre - next)
+        
+        // 3
+        arr2 = arr
+        
+        let result = [...new Set(arr2)]
+        return result
+    },
+    /**
+     * 生成一个长度为5的数组且元素的随机数在2-32间不重复的值
+     */
     buildArray: () => {
         // 用递归算法实现1
 
@@ -229,7 +245,6 @@ let myCode = {
     /**
      * (a == 1 && a == 2 && a == 3 )
      * (a === 1 && a == 2 && a === 3 )
-     * 
      */
     equal: () => {
         // 宽松相等
