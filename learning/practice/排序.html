@@ -2,11 +2,20 @@
 <head>
 	<meta charset="utf-8">
 	<title>排序</title>
+	<style>
+		html{
+			overflow-x: hidden;
+			width: 100%;
+			height: auto;
+		}
+		div{
+			height: 2000px;
+			overflow-y: scroll;
+		}
+	</style>
 </head>
 
 <body>
-<script src="../30s.js"></script>
-
 <script type="text/javascript">
 	var arr = [3,2,4,56,3,1,7,6,9,0,33]
 
@@ -14,10 +23,7 @@
 		for (var i = 0; i < arr.length; i++) {
 			for (var j =  arr.length - 1; j >= i; j--) {
 				if (arr[j] > arr[j+1]) {
-					var temp = ''
-					temp = arr[j]
-					arr[j] = arr[j+1]
-					arr[j+1] = temp
+					[arr[j], arr[j+1]] = [arr[j+1], arr[j]]
 				}
 			}
 		}
@@ -26,17 +32,14 @@
 	// console.log(buSort(arr), '--buSort--')
 
 	function quickSort(arr) {
-		if (arr.length == 0){
-			return []
+		if (arr.length <= 1){
+			return arr
 		}
 		var newL = [],
 		newR = [],
-		newArr = []
-		// debugger
-		middle = arr.splice(Math.floor(arr.length / 2), 1)
-		// middle = arr[Math.floor(arr.length / 2)]
+		newArr = [],
+		middle = arr.splice(0, 1)
 		
-		console.log(middle, '--middle--')
 		for (var i = 0; i < arr.length; i++) {
 			if (arr[i] > middle) {
 				newR.push(arr[i])
@@ -44,14 +47,11 @@
 				newL.push(arr[i])
 			}
 		}
-		console.log(newL, newR, '--newL, newR--')
-		return	quickSort(newL).concat(middle, quickSort(newR))
+
+		return quickSort(newL).concat(middle, quickSort(newR))
 	}
 
-	// console.log(quickSort(arr), '--quickSort--')
-
-
-
+	console.log(quickSort(arr), '--quickSort22--')
 
 </script>
 
