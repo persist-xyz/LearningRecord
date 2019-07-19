@@ -13,31 +13,36 @@ const promise = new Promise(function(resolve, reject) {
 });
 ```
 
-#### 2、所有的 ES6 特性你都知道吗？如果遇到一个东西不知道是 ES6 还是 ES5, 你该怎么区分它
 
-上网查；请教
 
 #### 3、es6的继承和es5的继承有什么区别
 - ES5的继承 是通过原型或构造函数机制来实现，实质上是先创建子类的实例对象，然后再将父类的方法添加到this上（Parent.apply(this)）
 
 ```javascript
-function teacher(name){  
+function Teacher(name){  
     this.name = name;  
 }  
-teacher.prototype.sayName = function(){  
-    console.log("name is "+this.name);  
+Teacher.prototype.sayName = function(){  
+    console.log("name is "+this.name);
 }  
-var teacher1 = new teacher("xiaoming");  
-teacher1.sayName();  
+var teacher = new Teacher("xiaoming");  
+teacher.sayName();  
   
-function student(name){  
+function Student(name){  
     this.name = name;  
 }  
-student.prototype = new teacher()  
-var student1 = new student("xiaolan");  
-student1.sayName();  
+Student.prototype = new Teacher()  
+Student.prototype.contructor = Student
+
+var student = new Student("xiaolan");  
+student.sayName();  
+
 //  name is xiaoming  
 //  name is xiaolan  
+
+Student.__proto__ === Function.prototype	// true
+// ES5的方式实现继承
+
 ```
 
 - ES6封装了class，extends关键字来实现继承，实质上是先创建父类的实例对象this（所以必须先调用父类的super()方法），然后再用子类的构造函数修改this。
@@ -48,12 +53,20 @@ class A {
     console.log('hello world');
   }
 }
-class B extends A {
-}
+class B extends A { }
 B.hello()  // hello world
+
+B.__proto__ === A	// true
+// 子类可以通过内部指针找到父类
+
 ```
 
+
+
+
+
 #### 4、promise封装ajax
+
 ```javascript
 function postJSON(url, data) {
     return new Promise( (resolve, reject) => {
@@ -83,7 +96,7 @@ function postJSON(url, data) {
 
 - const 声明的变量本身可变，只是说它不可被再次赋值
 
-#### 6、es6 generator 是什么，async/await 实现原理
+#### 6、generator 、Iterator分别是什么？async/await 实现原理
 
 - Generator 函数是 ES6 提供的一种异步编程解决方案
   * Generator 函数与传统函数相比有两个特征。一是，function关键字与函数名之间有一个星号；二是，函数体内部使用yield表达式，定义不同的内部状态。
@@ -157,9 +170,11 @@ true
 // 在执行evev.js的时候，发现加载了odd.js，所以在es6中，会优先执行odd.js，然后再来执行 even.js。所以在运行的时候，m.even(10);参数先会经过odd.js，此时n就等于9，进入even.js；然后counter+1；n在减一.直到n等于0的时候，此时counter的值为6。
 ```
 
-#### 10、Set、Map、WeakSet、WeakMap
 
-Set 和 Map 主要的应用场景在于 **数据重组** 和 **数据储存**
+
+
+
+#### 10、Set、Map、WeakSet、WeakMap
 
 Set 是一种叫做**集合**的数据结构，主要用于 **数据重组**
 
@@ -169,28 +184,32 @@ Map 是一种叫做**字典**的数据结构，主要用于 **数据储存**
 
   - new Set([iterable])
 
-  - 成员唯一、无序且不重复
+  - 成员唯一、无序且不重复（精确相等），但是在Set内部，认为两个NaN是相等的，两个对象总是不相等
   - [value, value]，键值与键名是一致的（或者说只有键值，没有键名），类似数组
   - 可以遍历，方法有：add、delete、has
 
 - WeakSet
 
-  - new WeakSet([[1, 2], [3, 4]])
+  - new WeakSet([[1, 2], [3, 4]]) 是一个构造函数，只接收数组或者类数组作为参数，且成员必须是个对象
 
   - 成员都是对象
   - 成员都是弱引用，可以被垃圾回收机制回收，可以用来保存DOM节点，不容易造成内存泄漏
-  - 不能遍历，方法有add、delete、has
+  - 不能遍历，方法只有add、delete、has
 
 - Map
 
-  -  本质上是键值对的集合，类似集合
-  -  可以遍历，方法很多，可以跟各种数据格式转换
+  -  本质上是键值对的集合，类似集合，键可以是任意类型的值（包括字符串），键值取得是引用地址
+  -  可以遍历，方法有get、set、has、delete、size，可以跟各种数据格式转换
 
 - WeakMap
 
   - 只接受对象作为键名（null除外），不接受其他类型的值作为键名
   - 键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
-  - 不能遍历，方法有get、set、has、delete
+  - 不能遍历，方法只有get、set、has、delete
+
+
+
+
 
 #### 11、异步笔试题
 
@@ -227,6 +246,77 @@ promise2
 setTimeout */
 
 ```
+
+
+
+#### 12、Object.prototype.toString.call() 、 instanceof 、Array.isArray()的区别
+
+
+
+`Object.prototype.toString.call()`
+
+`toString`是Object的原型方法，如果`toString`没有重写的话，直接调用会返回`[object type]`，`type`是该对象的类型
+
+除了Object类型以为的对象调用，会直接返回该值内容的字符串
+
+可判断所有数据类型，包括NULL和undefined
+
+
+
+ A `instanceof` B
+
+用来判断A是否是B的实例，但是判断不了实例A具体是哪种类型
+
+只能用来判断对象类型，并且所以的 instanceof Object 都返回true
+
+```javascript
+[].__proto__ === Array.prototype
+Array.prototype.__proto__ === Object.prototype
+Object.prototype.__proto__ === null
+// 形成一条原型链
+```
+
+
+
+`Array.isArray()`
+
+用来判断某个变量是否是数组类型
+
+在不支持的浏览器中，可以用`Object.prototype.toString.call()`	实现
+
+```javascript
+if (!Array.isArray) {
+  Array.isArray = function(arr) {
+    return Object.prototype.toString.call(arr) === '[object Array]'
+  }
+}
+
+```
+
+和instanceof相比，Array.isArray()可以检测出iframes
+
+```javascript
+i = document.createElement('iframe')
+document.body.appendChild(i)
+iArray = window.frames.Array
+arr = new iArray(1,2)
+
+arr instanceof Array	// false
+Object.prototype.toString.call(arr)	// '[object Array]'
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

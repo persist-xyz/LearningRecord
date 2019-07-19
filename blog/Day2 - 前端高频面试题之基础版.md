@@ -147,8 +147,6 @@ var a = add(1)(2)(3)(4).toString();  //10
 2. prototype用来实现基于原型的继承与属性的共享。
 3. __proto__就构成了我们常说的原型链访问构造方法中的显示原型，同样用于实现基于原型的继承。
 
-[proto](./images/proto.jpg)
-
 
 
 ```javascript
@@ -158,6 +156,7 @@ Object.prototype.a = function () {}
 Function.prototype.b = function () {}
 
 var f = new F()
+
 // 请问f有方法a  方法b吗
 f.a()	// success	
 // because:	f.__proto__ === F.prototype  F.prototype.__proto__ === Object.prototype  

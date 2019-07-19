@@ -1,22 +1,16 @@
-#### Vue 生命周期
+#### 1、Vue 生命周期
 
-<img src="https://assets.mgzf.com/appimg/ef301bdfe5e3f7c84dfa2687bb48a437.png" width=1500 />
+- beforeCreate： 做了部分参数初始化，如果有相同的参数，会进行合并，此阶段 el data都是undefined
+- created： 初始化了props data methods watch，此阶段有了data，还没有el
+- beforeMount：检查是否存在el属性，若存在则进行渲染dom操作，此阶段$el和data都初始化了，但是dom还是虚拟节点，数据还未替换
+- mounted：实例话watcher，渲染dom，实例挂载完成，数据成功渲染
+- beforeUpdate：数据更新时执行
+- updated：检查watcher列表，如果存在要更新的watcher，则执行updated
+- beforeDestroy：检查是否已卸载，如果已卸载，则直接return
+- destroyd：销毁所以的钩子函数
 
 
-
-<img src="https://assets.mgzf.com/appimg/f28dce6e4b95b0522473527a30820502.png" width=1200 />
-
-
-
-#### 1、Vue的双向数据绑定原理是什么？
-
-1.实现一个监听器Observer，用来劫持并监听所有属性，如果有变动的，就通知订阅者。
-
-2.实现一个订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。
-
-3.实现一个解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器
-
-------
+#### 2、Vue的双向数据绑定原理是什么？
 
 答：vue.js 是采用数据劫持 + 发布者-订阅者模式的方式，通过Object.defineProperty()来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调。
 
@@ -44,46 +38,9 @@ DOMListeners监听页面所有View层DOM元素的变化，当发生变化，Mode
 
 DataBindings监听Model层的数据，当数据发生变化，View层的DOM元素随之变化。
 
+#### 3、vue中<keep-alive>的作用？
 
-
-
-
-#### 3、vue中keepAlive的作用？遇到的问题？
-
-把切换出去的组件保留在缓存中，可以保留组件的状态避免重新渲染
-
-使用了keepAlive的页面，首次进入页面时，钩子触发是 created - mounted- activated，退出页面触发deactivated；再次进页面只触发activated。
-
-
-
-后一个页面滚动会触发前一个keepAlive页面的滚动事件，并且无法销毁
-
-解决：
-
-在导航路由beforeRouteLeave
-
-```javascript
-let routerLeave = false
-
-beforeRouteEnter (to, from, next) {
-  routerLeave = true;
-  next()
-},
-
-beforeRouteLeave (to, from, next) {
-  routerLeave = true;
-  if(to.name === 'detail') {
-  	routerLeave = false;
-  }
-  next();
-}
-// 加载下一页的地方，加上判断条件
-if (this.listReachBottom && routerLeave) {
-  // loadingNextPage
-}
-```
-
-
+把切换出去的组件保留在缓存中，可以保留组件的状态或者避免重新渲染
 
 #### 4、vuex
 
@@ -103,51 +60,47 @@ actions => 像一个装饰器，包裹mutations，使之可以异步
 
 modules => 模块化Vuex
 
-
-
-
-
 #### 5、v-for中key的作用？
 
-key是给每一个VNode的唯一ID，可以依靠key，更准确、更快的找到oldVnode中对应的vNode节点
+> key是给每一个vNode的唯一ID，可以依靠key，更准确、更快的找到oldVnode中对应的vNode节点
 
 带上key就不会就地复用，所有更准确；
 
 利用key的唯一性生成map对象来获取对应节点比遍历节点更快。
 
-
-
-
-
-
-
 #### 6、vue的虚拟dom？
+可以理解成节点描述对象，通过 createElement 方法能将 VNode 渲染成 dom 节点
 
 虚拟的DOM的核心思想是：对复杂的文档DOM结构，提供一种方便的工具，进行最小化地DOM操作
 
-
-
-
-
+虚拟DOM的最终目标是将虚拟节点渲染到视图上
 #### 7、Virtual DOM算法，简单总结下包括几个步骤：
 
-1、用JS对象描述出DOM树的结构，然后在初始化构建中，用这个描述树去构建真正的DOM，并实际展现到页面中
+只在同级vnode间做diff，递归地进行同级vnode的diff，最终实现整个DOM树的更新。
 
-2、当有数据状态变更时，重新构建一个新的JS的DOM树，通过新旧对比DOM数的变化diff，并记录两棵树差异
+1、用JS对象描述出DOM树的结构，然后用这个描述树去构建真正的DOM，并插入到文档中
 
-3、把步骤2中对应的差异通过步骤1重新构建真正的DOM，并重新渲染到页面中，这样整个虚拟DOM的操作就完成了，视图也就更新了
+2、当有数据状态变更时，重新构建一个新的dom树，然后用新的树与旧的树进行比较，记录两棵树的差异
+
+3、把这个差异应用到所构建的真正DOM树上，视图也就更新了
+
+
+#### 8、为何需要Virtual DOM？
+- 具备跨平台的优势
+- 操作 DOM 慢，js运行效率高
+- 提升渲染性能
 
 
 
+#### 9、你对Vue.js的template编译的理解？
+
+首先通过Compile编译器把template编译成AST语法树，
+然后AST会经过转化得到render函数，执行render函数返回VNode，VNode是Vue的虚拟DOM节点，里面包括Tag attrs children 等，接着再将VNode转化成真实DOM渲染到视图
+
+模板 → 渲染函数 → 虚拟DOM树 → 真实DOM
 
 
-#### 8、Vue中Watcher与Virtual DOM的关系：
-
-Watcher 是来决定你要不要更新这个dom
-
-虚拟DOM是用来找出怎么以最小的代价来更新
-
-#### 9、scss是什么？在vue.cli中的安装使用步骤是？有哪几大特性？
+#### 10、scss是什么？在vue.cli中的安装使用步骤是？有哪几大特性？
 
 答：css的预编译。
 
@@ -164,34 +117,101 @@ Watcher 是来决定你要不要更新这个dom
 2、可以用混合器，例如（）
 3、可以嵌套
 
-#### 10、组件之间的传值通信？
+#### 11、组件之间的传值通信？
 
-  父组件向子组件传值：
-    1）子组件在props中创建一个属性，用来接收父组件传过来的值
-    2）在父组件中注册子组件
-    3）在子组件标签中添加子组件props中创建的属性
-    4）把需要传给子组件的值赋给该属性。
+- props和$emit
+- 特性绑定$attrs和$listeners
+```
+// app.vue
+<child-com1 :name="name" :age="18" :gender="女" title="程序员成长指北"></child-com1>
 
-  子组件向父组件传值：
 
-    1）子组件中需要以某种方式（如点击事件）的方法来触发一个自定义的事件
-    2）将需要传的值作为$emit的第二个参数，该值将作为实参传给响应事件的方法
-    3）在父组件中注册子组件并在子组件标签上绑定自定义事件的监听。
+// childCom1.vue
+<child-com2 v-bind="$attrs"></child-com2>
 
-#### 11、vue-router有哪几种导航钩子？    
+props: {
+  name: String // name作为props属性绑定
+},
+created() {
+ 	console.log(this.$attrs); // { "age": "18", "gender": "女", "title": "程序员成长指北" }
+}
+
+
+// childCom2.vue
+props: {
+    age: String
+},
+created() {
+  console.log(this.$attrs);  // { "name": "zhang", "gender": "女", "title": "程序员成长指北" }
+}
+
+```
+
+- 中央事件总线 Events Bus
+
+
+```javascript
+// 1 声明一个空的vue对象并导出供其他模块使用
+// event-bus.js
+export const EventBus = new Vue()
+
+// A 触发事件
+import {EventBus} from './event-bus.js'
+ EventBus.$emit('addition', {
+   num: this.num++
+ })
+
+// B 监听事件
+import {EventBus} from './event-bus.js'
+EventBus.$on('addition', params => {
+  console.log(params.num)
+})
+```
+- 依赖注入：provide和inject，父组件中通过provider来提供变量，然后在子组件中通过inject来注入变量
+
+```
+// 父组件
+name: "Parent",
+provide: {
+    for: "demo"
+},
+components:{
+    childOne
+}
+
+// 子组件
+name: "childOne",
+inject: ['for'],
+data() {
+    return {
+        demo: this.for
+    }
+},
+components: {
+    childtwo
+}
+```
+
+- 子组件引用：ref和$refs
+- 父链和子索引：$parent和$children
+- Vuex
+
+
+
+
+#### 12、vue-router有哪几种导航钩子？    
 
 三种
-一种是全局导航钩子：router.beforeEach(to,from,next)，作用：跳转前进行判断拦截
-第二种：组件内的钩子
-第三种：单独路由独享组件
+- 全局导航钩子：router.beforeEach(to,from,next)，
+作用：跳转前进行判断拦截
+- 组件内的钩子 beforeRouterEnter beforeRouterLeave
+- 单独路由独享组件 beforeEach
 
-#### 12、你对Vue.js的template编译的理解？
-
-就是先转化成AST树（抽象语法树），再得到render函数返回VNode（Vue的虚拟DOM节点）
 
 #### 13.babel是如何将es6代码编译成es5的
 
 1. 配置.balbelrc文件
+
 ```
  {
     "presets": [
@@ -202,7 +222,9 @@ Watcher 是来决定你要不要更新这个dom
     "plugins": []
   }
 ```
+
 2. Babel提供babel-cli工具，用于命令行转码。 
+
 ```
 $ npm install --global babel-cli
 
@@ -217,3 +239,111 @@ $ npm install --global babel-cli
 }
 
 ```
+
+#### 14、Object.defineProperty和proxy的区别
+
+Object.defineProperty缺陷：
+
+第一个无法监听数组的变化；
+
+>  vue支持的八种监听数组变化的方法其实也是作者自己hack解决的
+>
+>  `const aryMethods = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'];`
+
+第二个只能劫持对象的属性，必须深度遍历每个对象；
+
+
+
+Proxy优势：
+
+可以直接监听整个对象而非属性，所以不需遍历，并返回一个新对象；
+
+可以直接监听数组的变化；
+
+劣势就是兼容性问题。
+
+
+
+#### 15、观察者模式和发布订阅模式的区别
+
+- 观察者模式：
+  - 被观察者和订阅者是互相依赖的关系，被观察者发生变化时，所有的订阅者都会收到通知
+
+
+
+- 发布订阅模式：
+  - 被观察者和订阅者是不直接关联的，而是通过一个消息代理进行通信，发布者发布一个通知，只有特定类型的订阅者才会收到通知
+
+
+
+#### 16、为什么data、props、method中属性名不能重复？
+
+都是要挂载到vm对象上的，会被覆盖
+
+
+
+#### 17、为什么在method、mounted中可以直接使用this.data获取data中的数据？
+
+在初始化方法proxy(vm,  '_data', key) 中 对vm上对应的data做了一层数据代理， 
+
+```javascript
+Object.defineProperty(target, key, {
+  get = function () {
+  	return this[_data].key	// 直接在_data对象中找到对应的key，返回对应的值
+	},
+  set = function () {}
+})
+```
+
+
+
+#### 18、computed 与 watcher的区别
+
+都是VUE对监听器的实现，即可以用来监听数据，进而进行操作
+
+computed
+- 是计算属性，并将值挂载到vm上
+- 只有依赖的数据发生变化或第一次访问computed属性，才会重新计算
+- 主要是对同步任务的处理，适用于一个数据被多个数据影响
+
+watch
+- 是监听已经存在且已挂载到vm上的数据
+- 只要watch的值发生变化就会执行函数
+- 适用于一个数据影响多个数据，做一些开销比较大的复杂逻辑
+
+
+
+#### 19、为什么data必须要用方法返回一个对象
+若直接返回一个对象，则当这个组件被复用时，所有的组件实例将会共享这个data，也就是一个地方改变，另外所有组件内的data都将同时变化
+而如果使用函数返回一个对象，每次重用组件都将会返回一个新的对象，引用地址不同，就不会出现这个问题
+
+
+
+
+#### 20、项目中遇到的难点有哪些？
+
+1、对于v-html动态生成的内容，父节点需要使用深度选择器 /deep/ 
+
+2、props可以直接引入父组件中的数据，若想操作该数据，需要存储一下data或computed再进行使用，否则会报错
+
+3、接入银联支付，不支持在vue文件中唤起
+
+4、本地调用接口的跨域问题：proxyTable设置代理，使用nginx反向代理
+
+5、设置nav样式排版时，需求是每个tab等距，超出一行，显示滚动条。使用align-content:space-between;时，超出一行的情况下，会滚动不回去，看不到前几个；使用align-content:space-around时，最后一个tab会贴到边上。
+
+6、设置标题，
+
+```vue
+// 单页面的title设置
+import VueWechatTitle from 'vue-wechat-title'
+
+<router-view v-if="isRouterAlive" v-wechat-title='$route.meta.title' />
+
+```
+
+7、列表页滑动加载下一页，详情页滑动也会触发列表页的滚动事件
+
+解决：在列表页的beforeRouteEnter 中初始化routerLeave = true，
+beforeRouteLeave中判断下一页地址，若是详情页，则置变量routerLeave = false;，
+再在触发加载下一页的地方加上这个条件

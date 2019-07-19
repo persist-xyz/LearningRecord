@@ -108,7 +108,7 @@ flex
 
 ##### 17、实现三栏布局（圣杯布局，双飞翼布局，flex布局）
 - 圣杯布局
-```
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -152,7 +152,7 @@ flex
 ```
 
 - 双飞翼布局
-```
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -291,14 +291,16 @@ Sass是对CSS（层叠样式表）的语法的一种扩充，诞生于2007年，
 
 ##### 25、什么是bfc，如何创建bfc？解决什么问题？
 - 块级格式化上下文
+  - 就是页面中隔离的独立容器，容器中的子元素不会影响外部元素，反之亦然
+
 - 创建BFC方法：
   - 浮动元素和绝对定位元素
   - overflow 不为 visiable的块级盒子
   - 非块级盒子的块级容器：即display 为 inline-blocks, table-cells, 和 table-captions （表格布局或者弹性布局）
-
+- position的值为absolute或fixed
 - 解决问题：
   - 可以解决浮动元素造成的父元素高度塌陷问题
-  - div浮动兄弟遮盖问题
+  - 清除内部浮动
   - Box垂直方向的距离由margin决定，在一个BFC中，两个相邻的块级盒子的垂直外边距会产生折叠
 
 ##### 26、CSS中的长度单位（px,pt,rem,em,ex,vw,vh,vh,vmin,vmax）

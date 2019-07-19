@@ -4,9 +4,9 @@
 
 #### 2、webpack的优势
 
-（1） webpack 是以 commonJS 的形式来书写脚本滴，但对 AMD/CMD 的支持也很全面，方便旧项目进行代码迁移。
-（2）能被模块化的不仅仅是 JS 了。
-（3） 开发便捷，能替代部分 grunt/gulp的工作，比如打包、压缩混淆、图片转base64等。
+（1） webpack 是以 commonJS 的形式来书写脚本，但对 AMD/CMD 的支持也很全面，方便旧项目进行代码迁移。
+（2）能被模块化的不仅仅是 JS 了
+（3） 开发便捷，能替代部分 grunt/gulp的工作，比如打包、压缩混淆、图片转base64等
 （4）扩展性强，插件机制完善
 
 #### 3、webpack 和 gulp 的区别
@@ -51,6 +51,12 @@ plugin用于扩展webpack的功能。不同于loader，plugin的功能更加丰�
 - define-plugin：定义环境变量
 - commons-chunk-plugin：提取公共代码
 - uglifyjs-webpack-plugin：通过UglifyES压缩ES6代码
+- mini-css-extract-plugin：抽离css文件
+- optimize-css-assets-webpack-plugin：压缩css文件
+- postcss-loader和autoprefixer：处理css私有前缀和兼容
+- clean-webpack-plugin：在每次打包时自动清理之前的产物
+
+
 
 #### 8、webpack-dev-server和http服务器如nginx有什么区别?
 
@@ -116,4 +122,12 @@ Webpack 的运行流程是一个串行的过程，从启动到结束会依次执
 - 输出完成：在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入到文件系统。
 
 在以上过程中，Webpack 会在特定的时间点广播出特定的事件，插件在监听到感兴趣的事件后会执行特定的逻辑，并且插件可以调用 Webpack 提供的 API 改变 Webpack 的运行结果
+
+
+
+
+
+
+
+
 

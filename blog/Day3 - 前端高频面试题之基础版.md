@@ -178,8 +178,8 @@ var banana = {
   color: 'yellow'
 }
 
-apply.getColor.call(banana)	// color is yellow
-apply.getColor.apply(banana)	// color is yellow
+apple.getColor.call(banana)	// color is yellow
+apple.getColor.apply(banana)	// color is yellow
 
 // 当一个 object 没有某个方法（本栗子中banana没有say方法），但是其他的有（本栗子中apple有say方法），我们可以借助call或apply用其它对象的方法来操作
 
